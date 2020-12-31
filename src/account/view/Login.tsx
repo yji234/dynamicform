@@ -1,11 +1,32 @@
-import React, { FC } from 'react';
+import { Button } from 'antd';
+import React, { FC, useCallback } from 'react';
+import { useHistory } from 'react-router-dom'
+import { getMenu } from '../../menu/api/index';
 
 const Login: FC<{}> = () => {
-  console.log('这是一个登陆页面');
+  const history = useHistory();
+  
+  const handleGetMenu = useCallback(() => {
+    getMenu().then((res) => {
+      sessionStorage.setItem('menuList', JSON.stringify(res.data))
+      const menuList = sessionStorage.getItem('menuList');
+      console.log('menuList', menuList);
+      if(menuList) {
+        history.push('/menu/manage')
+        window.location.reload();
+      }
+    });
+  }, [history]);
+
+  const handleLogin = useCallback(() => {
+    // 1、登录成功之后获取权限
+    // 2、根据权限获取对应的菜单🌲
+    handleGetMenu();
+  }, [handleGetMenu]);
 
   return (
     <div className="login">
-      这是一个登陆页面
+      <Button onClick={handleLogin}>登录</Button>
     </div>
   );
 };

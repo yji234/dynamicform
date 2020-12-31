@@ -10,9 +10,12 @@ const SuspenseComponent = (Component: React.FC) => (props: JSX.IntrinsicAttribut
 
 const LoginComponent = lazy(() => import('../account/view/Login'));
 
-const ProjectInfoComponent = lazy(() => import('../project/view/ProjectInfo'));
-const MarkInfoComponent = lazy(() => import('../project/view/MarkInfo'));
-const ProcessAllotTaskComponent = lazy(() => import('../project/view/ProcessAllotTask'));
+const ReviewComponent = lazy(() => import('../review/view/Review'));
+
+const MenuListComponent = lazy(() => import('../menu/view/MenuManage'));
+
+const FormList = lazy(() => import('../forms/view/FormList'));
+const CreateFormSetAttr = lazy(() => import('../forms/view/CreateFormSetAttr'));
 
 export interface RouteType{
   key?: string;
@@ -25,7 +28,7 @@ export interface RouteType{
   redirect?: string;  // 重定向
 }
 
-const routes: Array<RouteType> = [
+const staticRoutes: Array<RouteType> = [
   {
     path: '/',
     exact: true,
@@ -47,29 +50,75 @@ const routes: Array<RouteType> = [
     ],
   },
   {
-    path: '/project',
+    path: '/formother',
     component: NavLayout,
     routes: [
       {
-        path: '/project/project-info',
-        name: 'projectInfo',
+        path: '/formother/create-form-set-attr/:parentId',
         exact: true,
-        component: SuspenseComponent(ProjectInfoComponent),
+        component: SuspenseComponent(CreateFormSetAttr),
       },
       {
-        path: '/project/mark-info',
-        name: 'markInfo',
+        path: '/formother/review/:formId',
         exact: true,
-        component: SuspenseComponent(MarkInfoComponent),
-      },
-      {
-        path: '/project/process-allot-task',
-        name: 'processAllotTaskComponent',
-        exact: true,
-        component: SuspenseComponent(ProcessAllotTaskComponent),
+        component: SuspenseComponent(ReviewComponent),
       },
     ],
+  },
+];
+
+const handleDynamicRoutes = () => {
+  const menuListStr: any = sessionStorage.getItem('menuList');
+  if(!menuListStr) {
+    return;
   }
+  const menuList = JSON.parse(menuListStr)
+  // console.log('menuList', menuList);
+  // 父菜单
+  const parentMenuRoutes: any = [];
+  const parentMenu = menuList.filter((item: any) => !item.parentId);
+  parentMenu.forEach((item: any) => {
+    parentMenuRoutes.push({
+      path: item.to,
+      component: NavLayout,
+      routes: [],
+      _id: item._id,
+      parentId: item.parentId,
+    })
+  });
+  // 子菜单
+  const childrenMenu = menuList.filter((item: any) => item.parentId);
+  childrenMenu.forEach((subItem: any) => {
+    parentMenuRoutes.forEach((item: any) => {
+      if(subItem.parentId === item._id) {
+        item.routes = [
+          ...item.routes,
+          {
+            path: subItem.formId ? subItem.to + '/:formId?' : subItem.to,
+            name: subItem.to,
+            exact: true,
+            component:
+              subItem.formId
+                ? SuspenseComponent(ReviewComponent)
+                : subItem.to.indexOf('/menu/manage') !== -1
+                  ? SuspenseComponent(MenuListComponent)
+                  : SuspenseComponent(FormList),
+            _id: subItem._id,
+            parentId: subItem.parentId,
+          }
+        ];
+      }
+    })
+  })
+  return parentMenuRoutes;
+};
+
+const dynamicRoutes = handleDynamicRoutes() ? handleDynamicRoutes() : [];
+// console.log('dynamicRoutes', dynamicRoutes)
+
+const routes: Array<RouteType> = [
+  ...staticRoutes,
+  ...dynamicRoutes,
 ];
 
 export default routes;

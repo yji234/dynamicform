@@ -1,6 +1,14 @@
 .nav-layout{
+  overflow: hidden;
   .content{
     height: calc(100vh - 64px);
+    padding: 20px;
     overflow-y: auto;
   }
+}
+
+.ant-form-item-control-input-content{
+  display: flex!important;
+  align-items: center!important;
+  justify-content: flex-start!important;
 }
