@@ -54,7 +54,7 @@ const staticRoutes: Array<RouteType> = [
     component: NavLayout,
     routes: [
       {
-        path: '/formother/create-form-set-attr/:parentId',
+        path: '/formother/create-form-set-attr/:parentId/:operateType',
         exact: true,
         component: SuspenseComponent(CreateFormSetAttr),
       },
@@ -110,6 +110,7 @@ const handleDynamicRoutes = () => {
       }
     })
   })
+  console.log('parentMenuRoutes', parentMenuRoutes);
   return parentMenuRoutes;
 };
 

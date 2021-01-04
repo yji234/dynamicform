@@ -1,7 +1,7 @@
 import React, { FC, useCallback } from 'react';
 import { Button } from 'antd';
 import { useHistory, useParams } from 'react-router-dom';
-import { addFormList } from '../api/formlist';
+import { addFormList, modifyFormList } from '../api/formlist';
 
 interface OperateButtonProps{
   formList: any;
@@ -9,24 +9,42 @@ interface OperateButtonProps{
 
 const OperateButton: FC<OperateButtonProps> = (props) => {
   const { formList } = props;
-  const hostory = useHistory();
-  const { parentId } = useParams<{parentId: string;}>();
+  const history = useHistory();
+  const { parentId, operateType } = useParams<{parentId: string; operateType: string;}>();
 
   const handleReview = useCallback(() => {
     sessionStorage.setItem('forms', JSON.stringify(formList));
-    hostory.push('/form/review');
-  }, [hostory, formList]);
+    history.push('/form/review');
+  }, [history, formList]);
 
-  const handleSubmit = useCallback(() => {
-    console.log('handleSubmit', formList);
+  const handleAdd = useCallback(() => {
     addFormList({
       parentId,
       forms: JSON.stringify(formList),
     }).then((res) => {
       console.log(res);
-      hostory.push('/form/list');
+      history.push('/form/list');
     })
-  }, [formList]);
+  }, [formList, history, parentId]);
+
+  const handleModify = useCallback(() => {
+    modifyFormList({
+      parentId,
+      forms: JSON.stringify(formList),
+    }).then((res) => {
+      console.log(res);
+      history.push('/form/list');
+    })
+  }, [formList, history, parentId]);
+
+  const handleSubmit = useCallback(() => {
+    if(operateType === 'add') {
+      handleAdd();
+    } 
+    if(operateType === 'modify') {
+      handleModify();
+    }
+  }, [operateType, handleAdd, handleModify]);
 
   return (
     <div className="operate-button">

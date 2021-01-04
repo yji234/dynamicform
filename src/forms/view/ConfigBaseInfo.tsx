@@ -22,6 +22,7 @@ const ConfigBaseInfo: FC<ConfigBaseInfoProps> = (props) => {
   const [visible, setVisible] = useState(false);
   const [loading, setLoading] = useState(false);
   const [form] = Form.useForm();
+  const [operateType, setOperateType] = useState('add');
 
   const handleCancel = useCallback(() => {
     setVisible(false);
@@ -32,7 +33,7 @@ const ConfigBaseInfo: FC<ConfigBaseInfoProps> = (props) => {
     setLoading(true);
     addForm(value).then((res) => {
       const result: any = res.data;
-      history.push(`/formother/create-form-set-attr/${result.parentId}`);
+      history.push(`/formother/create-form-set-attr/${result.parentId}/${operateType}`);
       handleCancel();
     });
   };
@@ -46,6 +47,7 @@ const ConfigBaseInfo: FC<ConfigBaseInfoProps> = (props) => {
     if(modifyItem) {
       setVisible(true);
       form.setFieldsValue(modifyItem);
+      setOperateType('modify');
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [modifyItem]);
@@ -54,7 +56,7 @@ const ConfigBaseInfo: FC<ConfigBaseInfoProps> = (props) => {
     <div className="config-base-info">
       <Button type="primary" size="small" style={{ marginBottom: '20px' }} onClick={handleConfigBaseInfo}>新增</Button>
       <Modal
-        title="新建-配置表单基础信息"
+        title="新增/修改-配置表单基础信息"
         visible={visible}
         closable={false}
         footer={null}

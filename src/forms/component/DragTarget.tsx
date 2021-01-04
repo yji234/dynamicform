@@ -2,7 +2,8 @@ import React, { FC, useCallback, useEffect } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { useParams } from 'react-router-dom';
 import { FormListParams } from '../view/CreateFormSetAttr';
-import { getFormListById } from '../api/formlist';
+import { getFormListById, deleteFormList } from '../api/formlist';
+import { message } from 'antd';
 
 interface DragTargetProps{
   formList: any;
@@ -12,7 +13,7 @@ interface DragTargetProps{
 
 const DragTarget: FC<DragTargetProps> = (props) => {
   const {formList, setFormList, setCurrentSelected} = props;
-  const { parentId } = useParams<{parentId: string;}>();
+  const { parentId, operateType } = useParams<{parentId: string; operateType: string;}>();
 
   const handleDrop = useCallback((e) => {
     console.log('handleDrop--', e.target);
@@ -41,20 +42,45 @@ const DragTarget: FC<DragTargetProps> = (props) => {
     e.preventDefault();
   }, []);
 
-  const handleDelete = useCallback((list: FormListParams[], id: string) => {
-    console.log('handleDelete', id);
-    const newFormList = list.filter((item) => {
-      return item.id !== id;
-    });
-    console.log('handleDelete', newFormList);
-    setFormList([...newFormList]);
-  }, [setFormList]);
+  const handleDelete = useCallback((list: FormListParams[], id: string, _id: string) => {
+    console.log('handleDelete', id, _id);
+    if(operateType === 'add') {
+      const newFormList = list.filter((item) => {
+        return item.id !== id;
+      });
+      console.log('handleDelete', newFormList);
+      setFormList([...newFormList]);
+    }
+    if(operateType === 'modify') {
+      // 首先查询下数据库中是否数据
+      if(_id) {
+        // 如果有的话掉接口删除
+        deleteFormList({_id}).then((res) => {
+          const result: any = res;
+          message.info(result.message)
+          const newFormList = list.filter((item) => {
+            return item.id !== id;
+          });
+          console.log('handleDelete', newFormList);
+          setFormList([...newFormList]);
+        })
+      } else {
+        // 如果没有的话操作formList即可
+        const newFormList = list.filter((item) => {
+          return item.id !== id;
+        });
+        console.log('handleDelete', newFormList);
+        setFormList([...newFormList]);
+      }
+    }
+  }, [setFormList, operateType]);
 
   const handleClick = useCallback((item) => {
     console.log('handleClick', item);
     setCurrentSelected(item);
   }, [setCurrentSelected]);
 
+  // 修改的时候
   const handleGetFormListById = useCallback(() => {
     getFormListById({parentId}).then((res) => {
       const result: any = res.data;
@@ -83,7 +109,7 @@ const DragTarget: FC<DragTargetProps> = (props) => {
         onDragOver={handleDragOver}
       >
         {
-          formList.map((item: FormListParams) => (
+          formList.map((item: any) => (
             <div
               key={item.id}
               className="targetItem"
@@ -142,7 +168,7 @@ const DragTarget: FC<DragTargetProps> = (props) => {
                   cursor: 'pointer',
                   fontSize: '18px',
                 }}
-                onClick={() => handleDelete(formList, item.id)}
+                onClick={() => handleDelete(formList, item.id, item._id)}
               >
                 X
               </div>

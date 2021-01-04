@@ -30,6 +30,7 @@ const AddEditMenu: FC<AddEditMenuProps> = (props) => {
       const result: any = res;
       message.info(result.message);
       handleCancel();
+      window.location.reload();
     })
   }, [handleCancel]);
 
@@ -39,6 +40,7 @@ const AddEditMenu: FC<AddEditMenuProps> = (props) => {
       const result: any = res;
       message.info(result.message);
       handleCancel();
+      window.location.reload();
     });
   }, [handleCancel]);
 

@@ -101,6 +101,7 @@ const MenuManage: FC<{}> = () => {
       const result: any = res;
       message.info(result.message);
       handleGetMenu();
+      window.location.reload();
     })
   };
 
