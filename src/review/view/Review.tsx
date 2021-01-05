@@ -21,6 +21,9 @@ const Review: FC<{}> = () => {
   const location = useLocation();
   // 跳转路径
   const urlSearch: any = useMemo(() => {
+    if(!location.search) {
+      return;
+    }
     const search = decodeURIComponent(location.search).split('?')[1].split('&');
     let state = {};
     search.forEach((item) => {
@@ -47,9 +50,11 @@ const Review: FC<{}> = () => {
       console.log(res);
       const result: any = res;
       message.info(result.message);
-      history.push(urlSearch.jumpTo + '/' + formId + '?jumpTo=' + newPathname);
+      if (location.search) {
+        history.push(urlSearch.jumpTo + '/' + formId + '?jumpTo=' + newPathname);
+      }
     })
-  }, [formId, history, urlSearch.jumpTo, newPathname]);
+  }, [formId, history, urlSearch, newPathname, location]);
 
   const handleModify = useCallback((values) => {
     console.log(
@@ -97,7 +102,7 @@ const Review: FC<{}> = () => {
       console.log(res.data[0]);
       form.setFieldsValue(res.data[0]);
     })
-  }, [urlSearch.id, form]);
+  }, [urlSearch, form]);
 
   const handleGetFormListById = useCallback(() => {
     getFormListById({

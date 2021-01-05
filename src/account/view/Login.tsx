@@ -9,10 +9,15 @@ const Login: FC<{}> = () => {
   const handleGetMenu = useCallback(() => {
     getMenu().then((res) => {
       sessionStorage.setItem('menuList', JSON.stringify(res.data))
-      const menuList = sessionStorage.getItem('menuList');
-      console.log('menuList', menuList);
-      if(menuList) {
-        history.push('/menu/manage')
+      const menuListStr: any = sessionStorage.getItem('menuList');
+      // console.log('menuListStr', menuListStr);
+      const menuList = JSON.parse(menuListStr);
+      // console.log('menuList', menuList)
+      // 筛选出第一个子菜单
+      const firstChildMenu = menuList.filter((item: any) => (item.parentId === menuList[0]._id))[0];
+      // console.log(firstChildMenu);
+      if(firstChildMenu) {
+        history.push(firstChildMenu.to);
         window.location.reload();
       }
     });
