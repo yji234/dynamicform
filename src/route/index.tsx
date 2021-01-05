@@ -52,7 +52,7 @@ const staticRoutes: Array<RouteType> = [
   },
   {
     path: '/formother',
-    component: NavLayout,
+    component: BlankLayout,
     routes: [
       {
         path: '/formother/create-form-set-attr/:parentId/:operateType',

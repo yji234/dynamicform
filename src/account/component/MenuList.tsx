@@ -2,13 +2,13 @@ import React, { FC, useCallback, useEffect, useState } from 'react';
 import { Menu } from 'antd';
 import { UserOutlined } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
-import { useLocation } from 'react-router-dom';
+import { useRouteMatch } from 'react-router-dom';
 
 const { SubMenu } = Menu;
 const rootSubmenuKeys: any = [];
 
 const MenuList: FC<{}> = () => {
-  const location = useLocation();
+  const { path } = useRouteMatch<{path: string}>();
   const [menuList, setMenuList] = useState<any>([]);
   const [openKeys, setOpenKeys] = useState<any>([]);
   const [selectedKeys, setSelectedKeys] = useState<any>([]);
@@ -72,16 +72,14 @@ const MenuList: FC<{}> = () => {
   }, []);
 
   const handleSetDefaultOpenKeysAndSelectedKeys = useCallback(() => {
-    const pathnameList = location.pathname ? location.pathname.split('/') : [];
-    pathnameList.pop();
-    const newPathname = pathnameList.join('/');
+    // console.log('path', path);
     const menuListStr: any = sessionStorage.getItem('menuList');
     const menuList = JSON.parse(menuListStr);
-    const child = menuList.filter((item: any) => item.to === newPathname)[0];
-    const parent = menuList.filter((item: any) => item._id === child.parentId)[0];
+    const parent = menuList.filter((item: any) => item.to === path)[0];
+    const child = menuList.filter((item: any) => item.parentId === parent._id)[0];
     setOpenKeys([parent._id]);
     setSelectedKeys([child._id]);
-  }, [location]);
+  }, [path]);
 
   useEffect(() => {
     handleSetDefaultOpenKeysAndSelectedKeys();
