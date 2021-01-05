@@ -76,7 +76,7 @@ const DragTarget: FC<DragTargetProps> = (props) => {
   }, [setFormList, operateType]);
 
   const handleClick = useCallback((item) => {
-    console.log('handleClick', item);
+    // console.log('handleClick', item);
     setCurrentSelected(item);
   }, [setCurrentSelected]);
 
@@ -84,7 +84,7 @@ const DragTarget: FC<DragTargetProps> = (props) => {
   const handleGetFormListById = useCallback(() => {
     getFormListById({parentId}).then((res) => {
       const result: any = res.data;
-      console.log('result', result);
+      // console.log('result', result);
       setFormList([...result]);
     });
   }, [parentId, setFormList]);

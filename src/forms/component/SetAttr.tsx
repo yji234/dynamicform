@@ -1,4 +1,4 @@
-import React, { FC, useEffect } from 'react';
+import React, { FC, useCallback, useEffect, useState } from 'react';
 import { Form, Input, Radio, InputNumber } from 'antd';
 
 interface SetAttrProps{
@@ -9,6 +9,12 @@ interface SetAttrProps{
 const SetAttr: FC<SetAttrProps> = (props) => {
   const {currentSelected, handleUpdateFormListAttr} = props;
   const [form] = Form.useForm();
+  const [isRequired, setIsRequired] = useState<number>();
+
+  const handleChangeIsRequired = useCallback((value) => {
+    handleUpdateFormListAttr('isRequired', value)
+    setIsRequired(value);
+  }, [handleUpdateFormListAttr]);
 
   useEffect(() => {
     console.log('currentSelected', currentSelected);
@@ -16,6 +22,7 @@ const SetAttr: FC<SetAttrProps> = (props) => {
       return;
     }
     form.setFieldsValue(currentSelected);
+    setIsRequired(currentSelected.isRequired);
   }, [form, currentSelected]);
 
   return (
@@ -66,13 +73,13 @@ const SetAttr: FC<SetAttrProps> = (props) => {
           label="是否必填"
           rules={[{ required: true, message: '请选择是否必填' }]}
         >
-          <Radio.Group onChange={(e) => handleUpdateFormListAttr('isRequired', e.target.value)}>
+          <Radio.Group onChange={(e) => handleChangeIsRequired(e.target.value)}>
             <Radio.Button value={1} disabled={!currentSelected}>是</Radio.Button>
             <Radio.Button value={0} disabled={!currentSelected}>否</Radio.Button>
           </Radio.Group>
         </Form.Item>
         {
-          form.getFieldValue('isRequired') && (
+          isRequired === 1 && (
             <Form.Item
               name="message"
               label="必填提示信息"
