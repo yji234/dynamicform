@@ -89,6 +89,8 @@ const MenuManage: FC<{}> = () => {
       _id: item._id,
       name: item.name,
       to: item.to,
+      jumpTo: item.jumpTo,
+      formIdType: item.formIdType,
       formId: item.formId,
       parentId: item.parentId,
     }

@@ -55,7 +55,17 @@ const MenuList: FC<{}> = () => {
             {
               item && item.children && item.children.length > 0 && item.children.map((subItem: any) => (
                 <Menu.Item key={subItem._id}>
-                  <Link to={subItem.formId ? subItem.to + '/' + subItem.formId : subItem.to}>{subItem.name}</Link>
+                  <Link
+                    to={
+                      subItem.formId
+                        ? subItem.jumpTo
+                          ? subItem.to + '/' + subItem.formId + '?jumpTo=' + subItem.jumpTo
+                          : subItem.to + '/' + subItem.formId
+                        : subItem.to
+                    }
+                  >
+                    {subItem.name}
+                  </Link>
                 </Menu.Item>
               ))
             }

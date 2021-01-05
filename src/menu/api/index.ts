@@ -4,7 +4,9 @@ import request from '../../common/request';
 export interface AddMenuParamsType {
   name: string;
   to: string;
-  children: string;
+  jumpTo: string;
+  formIdType: string;
+  formId: string;
 }
 
 export function addMenu(params: AddMenuParamsType): AxiosPromise<{}> {
@@ -18,7 +20,9 @@ export interface UpdateMenuParamsType {
   _id: string;
   name: string;
   to: string;
-  children: string;
+  jumpTo: string;
+  formIdType: string;
+  formId: string;
 }
 
 export function updateMenu(params: UpdateMenuParamsType): AxiosPromise<{}> {

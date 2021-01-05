@@ -1,5 +1,5 @@
 import React, { FC, useCallback, useEffect, useState } from 'react';
-import { Modal, Form, Button, Input, message } from 'antd';
+import { Modal, Form, Button, Input, message, Radio } from 'antd';
 import { addMenu, updateMenu } from '../api/index';
 
 interface AddEditMenuProps{
@@ -139,6 +139,15 @@ const AddEditMenu: FC<AddEditMenuProps> = (props) => {
           </Form.Item>
           <Form.Item name="to" label="对应路径" rules={[{ required: true, message: '请输入' }]}>
             <Input placeholder="请输入菜单对应路径" />
+          </Form.Item>
+          <Form.Item name="jumpTo" label="跳转路径">
+            <Input placeholder="请输入跳转路径" />
+          </Form.Item>
+          <Form.Item name="formIdType" label="表单ID所属种类">
+            <Radio.Group>
+              <Radio value="form">form</Radio>
+              <Radio value="list">list</Radio>
+            </Radio.Group>
           </Form.Item>
           <Form.Item name="formId" label="表单ID">
             <Input placeholder="请输入表单ID" />

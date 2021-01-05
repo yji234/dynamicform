@@ -11,6 +11,7 @@ const SuspenseComponent = (Component: React.FC) => (props: JSX.IntrinsicAttribut
 const LoginComponent = lazy(() => import('../account/view/Login'));
 
 const ReviewComponent = lazy(() => import('../review/view/Review'));
+const ReviewManageComponent = lazy(() => import('../review/view/Manage'));
 
 const MenuListComponent = lazy(() => import('../menu/view/MenuManage'));
 
@@ -99,7 +100,9 @@ const handleDynamicRoutes = () => {
             exact: true,
             component:
               subItem.formId
-                ? SuspenseComponent(ReviewComponent)
+                ? subItem.formIdType === 'list'
+                  ? SuspenseComponent(ReviewManageComponent)
+                  : SuspenseComponent(ReviewComponent)
                 : subItem.to.indexOf('/menu/manage') !== -1
                   ? SuspenseComponent(MenuListComponent)
                   : SuspenseComponent(FormList),
@@ -110,7 +113,7 @@ const handleDynamicRoutes = () => {
       }
     })
   })
-  console.log('parentMenuRoutes', parentMenuRoutes);
+  // console.log('parentMenuRoutes', parentMenuRoutes);
   return parentMenuRoutes;
 };
 

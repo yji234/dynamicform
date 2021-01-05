@@ -21,7 +21,11 @@ const DragSource: FC<{}> = () => {
   }, []);
 
   // const handleAddSource = useCallback(() => {
-  //   buttonList.forEach((item) => {
+  //   const list = [{
+  //     name: 'Button',
+  //     bgColor: '#916DD5',
+  //   }];
+  //   list.forEach((item) => {
   //     addDragSource(item).then((res) => {
   //       console.log(res);
   //     })

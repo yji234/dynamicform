@@ -1,8 +1,8 @@
-import React, { FC, useCallback, useEffect, useState } from 'react';
-import { Form, Input, InputNumber, Button } from 'antd';
-import {useParams } from 'react-router-dom'
+import React, { FC, useCallback, useEffect, useMemo, useState } from 'react';
+import { Form, Input, InputNumber, Button, message } from 'antd';
+import { useParams, useLocation, useHistory } from 'react-router-dom'
 import  utils from '../../common/utils';
-import { getFormListById } from '../api/index';
+import { getFormListById, addFormValue, getFormValueItem, modifyFormValue } from '../api/index';
 
 const { TextArea } = Input;
 
@@ -17,10 +17,68 @@ const Review: FC<{}> = () => {
   const [formList, setFormList] = useState<any>([]);
   const [form] = Form.useForm();
   const [chineseCapitalOfMoney, setChineseCapitalOfMoney] = useState<string>();
+  const history = useHistory();
+  const location = useLocation();
+  // 跳转路径
+  const urlSearch: any = useMemo(() => {
+    const search = decodeURIComponent(location.search).split('?')[1].split('&');
+    let state = {};
+    search.forEach((item) => {
+      state = {
+        ...state,
+        [item.split('=')[0]]: item.split('=')[1],
+      }
+    });
+    return state;
+  }, [location.search])
+  // console.log('urlSearch', urlSearch);
+  const newPathname = useMemo(() => {
+    const pathnameList = location.pathname.split('/');
+    pathnameList.pop();
+    return pathnameList.join('/');
+  }, [location.pathname]);
+  // console.log('newPathname', newPathname);
+
+  const handleAdd = useCallback((values) => {
+    addFormValue({
+      formId,
+      ...values,
+    }).then((res) => {
+      console.log(res);
+      const result: any = res;
+      message.info(result.message);
+      history.push(urlSearch.jumpTo + '/' + formId + '?jumpTo=' + newPathname);
+    })
+  }, [formId, history, urlSearch.jumpTo, newPathname]);
+
+  const handleModify = useCallback((values) => {
+    console.log(
+      {
+        formId,
+        ...values,
+        _id: urlSearch.id,
+      }
+    )
+    modifyFormValue({
+      formId,
+      ...values,
+      _id: urlSearch.id,
+    }).then((res) => {
+      console.log(res);
+      const result: any = res;
+      message.info(result.message);
+      history.push(urlSearch.jumpTo + '/' + formId + '?jumpTo=' + newPathname);
+    })
+  }, [formId, history, urlSearch, newPathname]);
 
   const handleFinish = useCallback((values) => {
-    console.log('handleFinish', values);
-  }, []);
+    if (urlSearch && urlSearch.id) {
+      handleModify(values);
+    } else {
+      handleAdd(values);
+    }
+    
+  }, [urlSearch, handleModify, handleAdd]);
 
   const handleChangeMoney = useCallback((value) => {
     console.log('handleChangeMoney', value);
@@ -33,18 +91,28 @@ const Review: FC<{}> = () => {
     setChineseCapitalOfMoney('')
   }, [form]);
 
+  const handleGetFormValue = useCallback(() => {
+    console.log(urlSearch.id);
+    getFormValueItem({_id: urlSearch.id}).then((res: any) => {
+      console.log(res.data[0]);
+      form.setFieldsValue(res.data[0]);
+    })
+  }, [urlSearch.id, form]);
+
   const handleGetFormListById = useCallback(() => {
     getFormListById({
       parentId: formId,
     }).then((res) => {
-      console.log(res);
       const result: any = res.data;
       setFormList([...result]);
+      if(urlSearch && urlSearch.id) {
+        handleGetFormValue();
+      }
     })
-  }, [formId]);
+  }, [formId, urlSearch, handleGetFormValue]);
 
   useEffect(() => {
-    console.log('formId', formId);
+    // console.log('formId', formId);
     handleGetFormListById();
   }, [formId, handleGetFormListById]);
 
