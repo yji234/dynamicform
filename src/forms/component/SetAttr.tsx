@@ -1,5 +1,6 @@
-import React, { FC, useCallback, useEffect, useState } from 'react';
+import React, { FC, useCallback, useEffect, useRef, useState } from 'react';
 import { Form, Input, Radio, InputNumber } from 'antd';
+import SetOptions from './SetOptions';
 
 interface SetAttrProps{
   currentSelected: any;
@@ -10,10 +11,16 @@ const SetAttr: FC<SetAttrProps> = (props) => {
   const {currentSelected, handleUpdateFormListAttr} = props;
   const [form] = Form.useForm();
   const [isRequired, setIsRequired] = useState<number>();
+  const setOptionsRef = useRef<any>();
 
   const handleChangeIsRequired = useCallback((value) => {
     handleUpdateFormListAttr('isRequired', value)
     setIsRequired(value);
+  }, [handleUpdateFormListAttr]);
+
+  const handleChangeOptions = useCallback((list) => {
+    console.log('list', list);
+    handleUpdateFormListAttr('options', list)
   }, [handleUpdateFormListAttr]);
 
   useEffect(() => {
@@ -23,6 +30,13 @@ const SetAttr: FC<SetAttrProps> = (props) => {
     }
     form.setFieldsValue(currentSelected);
     setIsRequired(currentSelected.isRequired);
+    if(!currentSelected.options) {
+      setOptionsRef.current.handleSetList([]);
+      return;
+    }
+    if(setOptionsRef.current) {
+      setOptionsRef.current.handleSetList(currentSelected.options);
+    }
   }, [form, currentSelected]);
 
   return (
@@ -56,6 +70,20 @@ const SetAttr: FC<SetAttrProps> = (props) => {
             disabled={!currentSelected}
           />
         </Form.Item>
+        {
+          currentSelected && (currentSelected.type === 'Radio' || currentSelected.type === 'Checkbox' || currentSelected.type === 'Select') && (
+            <Form.Item
+              name="options"
+              label="控件选项"
+            >
+              <SetOptions
+                isDisabled={!currentSelected}
+                onChange={handleChangeOptions}
+                setOptionsRef={setOptionsRef}
+              />
+            </Form.Item>
+          )
+        }
         <Form.Item
           name="placeHolder"
           label="提示文字"

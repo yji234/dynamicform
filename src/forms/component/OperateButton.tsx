@@ -12,11 +12,6 @@ const OperateButton: FC<OperateButtonProps> = (props) => {
   const history = useHistory();
   const { parentId, operateType } = useParams<{parentId: string; operateType: string;}>();
 
-  const handleReview = useCallback(() => {
-    sessionStorage.setItem('forms', JSON.stringify(formList));
-    history.push('/form/review');
-  }, [history, formList]);
-
   const handleAdd = useCallback(() => {
     addFormList({
       parentId,
@@ -38,6 +33,7 @@ const OperateButton: FC<OperateButtonProps> = (props) => {
   }, [formList, history, parentId]);
 
   const handleSubmit = useCallback(() => {
+    // console.log('formList', formList);
     if(operateType === 'add') {
       handleAdd();
     } 
@@ -48,7 +44,6 @@ const OperateButton: FC<OperateButtonProps> = (props) => {
 
   return (
     <div className="operate-button">
-      <Button onClick={handleReview} style={{ margin: '10px'}}>预览</Button>
       <Button onClick={handleSubmit} style={{ margin: '10px'}} type="primary">提交</Button>
     </div>
   );

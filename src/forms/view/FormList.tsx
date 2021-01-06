@@ -138,7 +138,8 @@ const FormList: FC<{}> = () => {
   const handleReview = useCallback((item) => {
     getFormListById({ parentId: item._id }).then((res) => {
       sessionStorage.setItem('forms', JSON.stringify(res.data))
-      history.push(`/formother/review/${item._id}`);
+      // history.push(`/formother/review/${item._id}`);
+      window.open(`/formother/review/${item._id}`);
     })
   }, [history]);
 

@@ -33,8 +33,8 @@ const ConfigBaseInfo: FC<ConfigBaseInfoProps> = (props) => {
     setLoading(true);
     addForm(value).then((res) => {
       const result: any = res.data;
-      // history.push(`/formother/create-form-set-attr/${result.parentId}/${operateType}`);
-      window.open(`/formother/create-form-set-attr/${result.parentId}/${operateType}`);
+      history.push(`/formother/create-form-set-attr/${result.parentId}/${operateType}`);
+      // window.open(`/formother/create-form-set-attr/${result.parentId}/${operateType}`);
       handleCancel();
     });
   };

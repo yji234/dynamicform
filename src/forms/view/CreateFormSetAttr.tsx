@@ -6,11 +6,16 @@ import DragTarget from '../component/DragTarget';
 import SetAttr from '../component/SetAttr';
 import OperateButton from '../component/OperateButton';
 
+interface OptionsParams{
+  text: string;
+  order: number;
+}
 export interface FormListParams{
   id: string;
   type: string;
   name: string;
   label: string;
+  options?: OptionsParams[];
   placeHolder?: string;
   isRequired?: number;
   message?: string;

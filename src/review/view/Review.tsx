@@ -1,10 +1,12 @@
 import React, { FC, useCallback, useEffect, useMemo, useState } from 'react';
-import { Form, Input, InputNumber, Button, message } from 'antd';
+import { Form, Input, InputNumber, Button, message, Radio, Checkbox, Select } from 'antd';
 import { useParams, useLocation, useHistory } from 'react-router-dom'
 import  utils from '../../common/utils';
 import { getFormListById, addFormValue, getFormValueItem, modifyFormValue } from '../api/index';
+import './Review.scss';
 
 const { TextArea } = Input;
+const { Option } = Select;
 
 const Review: FC<{}> = () => {
   // const formList = useMemo(() => {
@@ -189,6 +191,64 @@ const Review: FC<{}> = () => {
                       />
                     </Form.Item>
                     <span>大写：{chineseCapitalOfMoney}</span>
+                  </Form.Item>
+                )
+              }
+              {
+                item.type === 'Radio' && (
+                  <Form.Item
+                    name={item.name}
+                    label={item.label}
+                    rules={[{ required: item.isRequired ? true: false, message: item.message }]}
+                  >
+                    <Radio.Group>
+                      {
+                        item.options.map((oItem: {order: number, text: string}) => (
+                          <Radio value={oItem.order}>{oItem.text}</Radio>
+                        ))
+                      }
+                    </Radio.Group>
+                  </Form.Item>
+                )
+              }
+              {
+                item.type === 'Checkbox' && (
+                  <Form.Item
+                    name={item.name}
+                    label={item.label}
+                    rules={[{ required: item.isRequired ? true: false, message: item.message }]}
+                  >
+                    <Checkbox.Group>
+                      {
+                        item.options.map((oItem: {order: number, text: string}) => (
+                          <Checkbox value={oItem.order}>{oItem.text}</Checkbox>
+                        ))
+                      }
+                    </Checkbox.Group>
+                  </Form.Item>
+                )
+              }
+              {
+                item.type === 'Select' && (
+                  <Form.Item
+                    name={item.name}
+                    label={item.label}
+                    rules={[{ required: item.isRequired ? true: false, message: item.message }]}
+                  >
+                    <Select mode="multiple" placeholder={item.placeHolder}>
+                      {
+                        item.options.map((oItem: {order: number, text: string}) => (
+                          <Option value={oItem.order}>{oItem.text}</Option>
+                        ))
+                      }
+                    </Select>
+                  </Form.Item>
+                )
+              }
+              {
+                item.type === 'Remark' && (
+                  <Form.Item label={item.label}>
+                    <p style={{ color: 'red' }}>{item.placeHolder}</p>
                   </Form.Item>
                 )
               }
