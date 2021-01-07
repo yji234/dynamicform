@@ -31,9 +31,12 @@ const SetAttr: FC<SetAttrProps> = (props) => {
     form.setFieldsValue(currentSelected);
     setIsRequired(currentSelected.isRequired);
     if(!currentSelected.options) {
-      setOptionsRef.current.handleSetList([]);
+      if(setOptionsRef.current) {
+        setOptionsRef.current.handleSetList([]);
+      }
       return;
     }
+    console.log('setOptionsRef.current', setOptionsRef.current);
     if(setOptionsRef.current) {
       setOptionsRef.current.handleSetList(currentSelected.options);
     }

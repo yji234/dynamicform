@@ -2,7 +2,7 @@ import React, { FC, useCallback, useEffect } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { useParams } from 'react-router-dom';
 import { FormListParams } from '../view/CreateFormSetAttr';
-import { getFormListById, deleteFormList } from '../api/formlist';
+import { getFormListById, deleteFormList } from '../api/formattr';
 import { message } from 'antd';
 
 interface DragTargetProps{

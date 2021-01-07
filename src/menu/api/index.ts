@@ -10,7 +10,7 @@ export interface AddMenuParamsType {
 }
 
 export function addMenu(params: AddMenuParamsType): AxiosPromise<{}> {
-  return request('/addMenu', {
+  return request('/menu/add', {
     method: 'POST',
     data: params
   });
@@ -26,14 +26,14 @@ export interface UpdateMenuParamsType {
 }
 
 export function updateMenu(params: UpdateMenuParamsType): AxiosPromise<{}> {
-  return request('/updateMenu', {
+  return request('/menu/update', {
     method: 'POST',
     data: params
   });
 }
 
 export function getMenu(): AxiosPromise<{}> {
-  return request('/getMenu', {
+  return request('/menu/list', {
     method: 'GET',
   });
 }
@@ -43,7 +43,7 @@ export interface DeleteMenuParamsType {
 }
 
 export function deleteMenu(params: DeleteMenuParamsType): AxiosPromise<{}> {
-  return request(`/deleteMenu/${params._id}`, {
+  return request(`/menu/delete/${params._id}`, {
     method: 'DELETE',
   });
 }

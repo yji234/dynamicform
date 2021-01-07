@@ -7,14 +7,14 @@ export interface AddDragSourceParamsType {
 }
 
 export function addDragSource(params: AddDragSourceParamsType): AxiosPromise<{}> {
-  return request(`/addDragSource`, {
+  return request('/dragdrop/add', {
     method: 'POST',
     data: params,
   });
 }
 
 export function getDragSource(): AxiosPromise<{}> {
-  return request(`/getDragSource`, {
+  return request('/dragdrop/list', {
     method: 'GET',
   });
 }

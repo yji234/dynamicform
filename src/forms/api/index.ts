@@ -7,7 +7,7 @@ export interface GetFormListParamsType {
 }
 
 export function getFormList(params: GetFormListParamsType): AxiosPromise<{}> {
-  return request(`/getDynamicforms?pageNum=${params.pageNum}&pageSize=${params.pageSize}`, {
+  return request(`/form/list?pageNum=${params.pageNum}&pageSize=${params.pageSize}`, {
     method: 'GET',
   });
 }
@@ -19,7 +19,7 @@ export interface AddFormParamsType {
 }
 
 export function addForm(params: AddFormParamsType): AxiosPromise<{}> {
-  return request('/addForm', {
+  return request('/form/add', {
     method: 'POST',
     data: params,
   });
@@ -30,7 +30,7 @@ export interface DeleteFormParamsType {
 }
 
 export function deleteForm(params: DeleteFormParamsType): AxiosPromise<{}> {
-  return request(`/deleteForm/${params.id}`, {
+  return request(`/form/delete/${params.id}`, {
     method: 'DELETE',
   });
 }
@@ -41,7 +41,7 @@ export interface ModifyStatusParamsType {
 }
 
 export function modifyStatus(params: ModifyStatusParamsType): AxiosPromise<{}> {
-  return request(`/modifyStatus/${params.id}/${params.status}`, {
+  return request(`/form/update/status/${params.id}/${params.status}`, {
     method: 'GET',
   });
 }

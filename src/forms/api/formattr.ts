@@ -7,7 +7,7 @@ export interface AddFormListParamsType {
 }
 
 export function addFormList(params: AddFormListParamsType): AxiosPromise<{}> {
-  return request(`/addFormList`, {
+  return request('/form/attr/add', {
     method: 'POST',
     data: params,
   });
@@ -19,7 +19,7 @@ export interface ModifyFormListParamsType {
 }
 
 export function modifyFormList(params: ModifyFormListParamsType): AxiosPromise<{}> {
-  return request(`/modifyFormList`, {
+  return request('/form/attr/update', {
     method: 'POST',
     data: params,
   });
@@ -30,7 +30,7 @@ export interface GetFormListParamsType {
 }
 
 export function getFormListById(params: GetFormListParamsType): AxiosPromise<{}> {
-  return request(`/getFormList/${params.parentId}`, {
+  return request(`/form/attr/list/${params.parentId}`, {
     method: 'GET',
   });
 }
@@ -40,7 +40,7 @@ export interface DeleteFormListParamsType {
 }
 
 export function deleteFormList(params: DeleteFormListParamsType): AxiosPromise<{}> {
-  return request(`/deleteFormList/${params._id}`, {
+  return request(`/form/attr/delete/${params._id}`, {
     method: 'DELETE',
   });
 }

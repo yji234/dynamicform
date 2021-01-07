@@ -1,7 +1,7 @@
 import React, { FC, useCallback } from 'react';
 import { Button } from 'antd';
 import { useHistory, useParams } from 'react-router-dom';
-import { addFormList, modifyFormList } from '../api/formlist';
+import { addFormList, modifyFormList } from '../api/formattr';
 
 interface OperateButtonProps{
   formList: any;

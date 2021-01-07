@@ -16,7 +16,7 @@ import { ColumnsType } from 'antd/es/table';
 import { useHistory } from 'react-router-dom';
 import copy from 'copy-to-clipboard'
 import { getFormList, deleteForm, modifyStatus } from '../api';
-import { getFormListById } from '../api/formlist';
+import { getFormListById } from '../api/formattr';
 import ConfigBaseInfo from './ConfigBaseInfo';
 
 export interface FormListItem {
