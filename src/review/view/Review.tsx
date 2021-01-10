@@ -2,7 +2,8 @@ import React, { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import { Form, Input, InputNumber, Button, message, Radio, Checkbox, Select } from 'antd';
 import { useParams, useLocation, useHistory } from 'react-router-dom'
 import  utils from '../../common/utils';
-import { getFormListById, addFormValue, getFormValueItem, modifyFormValue } from '../api/index';
+import { getFormListById } from '../../forms/api/formattr';
+import {addFormValue, getFormValueItem, modifyFormValue } from '../api/index';
 import './Review.scss';
 
 const { TextArea } = Input;

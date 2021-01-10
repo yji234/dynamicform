@@ -14,7 +14,8 @@ import {
 import moment from 'moment';
 import { ColumnsType } from 'antd/es/table';
 import { useHistory, useParams, useLocation } from 'react-router-dom';
-import { getFormValue, deleteFormValue, getFormListById } from '../api';
+import { getFormListById } from '../../forms/api/formattr';
+import { getFormValue, deleteFormValue } from '../api';
 
 export interface PaginationParams{
   pageNum: number;
