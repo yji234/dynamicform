@@ -16,7 +16,7 @@ export interface AddFormValueParamsType {
 }
 
 export function addFormValue(params: AddFormValueParamsType): AxiosPromise<{}> {
-  return request('/form/add', {
+  return request('/form/value/add', {
     method: 'POST',
     data: params,
   });
@@ -29,7 +29,7 @@ export interface GetFormValueParamsType {
 }
 
 export function getFormValue(params: GetFormValueParamsType): AxiosPromise<{}> {
-  return request(`/form/list/${params.formId}`, {
+  return request(`/form/value/list/${params.formId}`, {
     method: 'GET',
   });
 }
@@ -39,7 +39,7 @@ export interface DeleteFormValueParamsType {
 }
 
 export function deleteFormValue(params: DeleteFormValueParamsType): AxiosPromise<{}> {
-  return request(`/form/delete/${params._id}`, {
+  return request(`/form/value/delete/${params._id}`, {
     method: 'DELETE',
   });
 }
@@ -49,7 +49,7 @@ export interface GetFormValueItemParamsType {
 }
 
 export function getFormValueItem(params: GetFormValueItemParamsType): AxiosPromise<{}> {
-  return request(`/form/value/${params._id}`, {
+  return request(`/form/value/item/${params._id}`, {
     method: 'GET',
   });
 }
@@ -60,7 +60,7 @@ export interface ModifyFormValueParamsType {
 }
 
 export function modifyFormValue(params: ModifyFormValueParamsType): AxiosPromise<{}> {
-  return request('/form/update ', {
+  return request('/form/value/update ', {
     method: 'POST',
     data: params,
   });
